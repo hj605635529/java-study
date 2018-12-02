@@ -17,7 +17,7 @@
     </settings>
     <typeHandlers>
         <!--1、配置我们自定义的TypeHandler  -->
-        <typeHandler handler="com.qunar.hotel.typehandler.EmpStatusTypeHandler" javaType="com.qunar.hotel.enums.EmpStatus"/>
+        <typeHandler handler="com.qunar.hotel.typehandler.EmpStatusTypeHandler2" javaType="com.qunar.hotel.enums.EmpStatus"/>
         <!--2、也可以在处理某个字段的时候告诉MyBatis用什么类型处理器
                 保存：#{empStatus,typeHandler=xxxx}
                 查询：
