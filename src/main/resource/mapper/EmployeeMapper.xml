@@ -22,10 +22,10 @@
 		select id,last_name,email,gender,empStatus from employee where id = #{id}
 	</select>
 
-    <!--&lt;!&ndash;public List<Employee> getEmps();  &ndash;&gt;-->
-    <!--<select id="getEmps" resultType="com.atguigu.mybatis.bean.Employee">-->
-		<!--select id,last_name lastName,email,gender from tbl_employee-->
-	<!--</select>-->
+
+    <select id="getEmps" resultType="com.qunar.hotel.bean.Employee">
+		select id,last_name lastName,email,gender, empStatus from employee
+	</select>
 
 
 
