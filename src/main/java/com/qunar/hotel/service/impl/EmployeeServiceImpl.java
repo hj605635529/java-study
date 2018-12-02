@@ -26,13 +26,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void getEmps() {
-        int pageNo = 2;
-        int pageSize = 2;
-        PageHelper.startPage(pageNo, pageSize);
+        int pageNo = 10;
+        int pageSize = 0;
+       PageHelper.startPage(pageNo, pageSize);
 
         List<Employee> employeeList = employeeDao.getEmps();
 
-        PageInfo page = new PageInfo(employeeList);
+       PageInfo page = new PageInfo(employeeList);
 
         System.out.println(page);
 
