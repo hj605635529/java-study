@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。-->
+<!--scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。-->
+<!--debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。-->
+<configuration scan="true" scanPeriod="60" debug="false">
+
+    <!--定义参数常量 -->
+    <!-- TRACE<DEBUG<INFO<WARM<ERROR -->
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="log.level" value="debug"/>
+    <property name="log.maxHistory" value="30"/>
+    <!-- catalina.base是tomcat实例的目录 -->
+    <!--<property name="log.filePath" value="${catalina.base}/logs/springmvcdemo"/>-->
+    <property name="log.filePath" value="/Users/huangjia/logs/springmvcdemo"/>
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+
+
+    <!--logback主要三个标签：-->
+    <!--1.logger 存放日志对象，定义日志级别-->
+    <!--2.appender  指定日志输出的目的地-->
+    <!--3.layout    格式化日志信息成为字符串输出   encoder 功能更强劲 ，会将转换后的字符串输入到文件中-->
+
+    <!--控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- DEBUG文件  日志向debug.log中写，到了一定的时间（一天后）或数量就会向log.gz中存入-->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--文件路径 -->
+        <file>${log.filePath}/debug.log</file>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--压缩文件名称 -->
+            <FileNamePattern>${log.filePath}/debug/debug.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <!--文件最大保存历史数量 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder >
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- INFO文件 -->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--文件路径 -->
+        <file>${log.filePath}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--压缩文件名称 -->
+            <FileNamePattern>${log.filePath}/info/info.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <!--文件最大保存历史数量 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder >
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ERROR文件 -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--文件路径 -->
+        <file>${log.filePath}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--压缩文件名称 -->
+            <FileNamePattern>${log.filePath}/error/error.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <!--文件最大保存历史数量 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder >
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- logger记录那个级别以上的信息，继承root,如果这里level没有指定，就会继承root的level
+           additivity = true 以logger级别为准 ，不在向root抛出，日志不会在控制台打印两遍
+    -->
+    <logger name="com.qunar" level="${log.level}" additivity="true">
+        <appender-ref ref="DEBUG" />
+        <appender-ref ref="INFO" />
+        <appender-ref ref="ERROR"/>
+        <!--这里继承了root 的appender-ref相当于写了 <appender-ref ref="STDOUT"/> -->
+    </logger>
+
+    <!-- root特殊的logger,父logger -->
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+
+</configuration>

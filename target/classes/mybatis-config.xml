@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 配置全局属性 -->
+    <settings>
+        <!-- 使用jdbc的getGeneratedKeys获取数据库自增主键值 -->
+        <setting name="useGeneratedKeys" value="true" />
+
+
+        <!-- 开启驼峰命名转换:Table{create_time} -> Entity{createTime} -->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+
+        <!--打印sql语句-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+    <typeHandlers>
+        <!--1、配置我们自定义的TypeHandler  -->
+        <typeHandler handler="com.qunar.hotel.typehandler.EmpStatusTypeHandler" javaType="com.qunar.hotel.enums.EmpStatus"/>
+        <!--2、也可以在处理某个字段的时候告诉MyBatis用什么类型处理器
+                保存：#{empStatus,typeHandler=xxxx}
+                查询：
+                    <resultMap type="com.atguigu.mybatis.bean.Employee" id="MyEmp">
+                         <id column="id" property="id"/>
+                         <result column="empStatus" property="empStatus" typeHandler=""/>
+                     </resultMap>
+                注意：如果在参数位置修改TypeHandler，应该保证保存数据和查询数据用的TypeHandler是一样的。
+          -->
+    </typeHandlers>
+</configuration>
